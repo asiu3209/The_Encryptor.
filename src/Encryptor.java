@@ -65,6 +65,16 @@ public class Encryptor
         return temp;
     }
 
+    public String decryptBlock(){
+        String temp = "";
+        for (int i = 0;i<letterBlock.length;i++){
+            for (int j =0;j<letterBlock[0].length;j++){
+                temp+= letterBlock[i][j];
+            }
+        }
+        return temp;
+    }
+
     /** Encrypts a message.
      *
      *  @param message the string to be encrypted
@@ -111,8 +121,41 @@ public class Encryptor
      *        (e.g. a method to decrypt each section of the decrypted message,
      *         similar to how encryptBlock was used)
      */
-    public String decryptMessage(String encryptedMessage)
-    {
-        for (int i = 0;i < )
+    public String decryptMessage(String encryptedMessage) {
+//        ArrayList<String> temp = new ArrayList<>();
+//        for (int i = 0; i<encryptedMessage.length();i++){
+//            temp.add(encryptedMessage.substring(i,i+1));
+//        }
+        String temp2 = "";
+        int count = numCols * numRows;
+        for (int i = 0; i < encryptedMessage.length(); i += numCols * numRows) {
+            String temp3 = encryptedMessage.substring(i, count);
+            fillBlock_Colums(temp3);
+            temp2 += decryptBlock();
+            count += numCols * numRows;
+        }
+        ArrayList<String> temp3 = new ArrayList<String>();
+        for (int i = 0;i<temp2.length();i++){
+            temp3.add(temp2.substring(i,i+1));
+        }
+        while (temp3.get(temp3.size()-1).equals("A")){
+            temp3.remove(temp3.size()-1);
+        }
+        temp2 = "";
+        for (String i : temp3){
+            temp2 += i;
+        }
+        return temp2;
     }
+        public void fillBlock_Colums(String str){
+            int count = 0;
+            int length = str.length();
+            for (int i = 0; i < numCols;i++){
+                for (int k = 0;k < numRows;k++){
+                        letterBlock[k][i] = str.substring(count,count+1);
+                        count++;
+                }
+            }
+        }
+
 }
